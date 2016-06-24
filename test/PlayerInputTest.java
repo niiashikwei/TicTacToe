@@ -27,6 +27,6 @@ public class PlayerInputTest{
         playerInput.getInput();
 
         verify(printStream).println("Please enter the number corresponding to the position you want to play: ");
-        verify(bufferedReader).read();
+        verify(bufferedReader).readLine();
     }
 }

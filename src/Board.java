@@ -1,5 +1,6 @@
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
     private final PrintStream printStream;
@@ -12,19 +13,20 @@ public class Board {
 
     public void drawBoard() {
         StringBuilder boardRepresentation = new StringBuilder();
-
-        for(String position : boardState){
-            int boardPosition = Integer.parseInt(position);
+        int newRowCounter = 0;
+        List<String> allBoardPositionsExceptLastOne = boardState.subList(0, boardState.size()-1);
+        for(String position : allBoardPositionsExceptLastOne){
             boardRepresentation.append(position);
-            if(boardPosition % 3 != 0){
+            if(newRowCounter != 2){
                 boardRepresentation.append("|");
+                newRowCounter++;
             }else {
-                boardRepresentation.append("\n");
-                if (boardPosition != boardState.size()){
-                    boardRepresentation.append("-----\n");
-                }
+                boardRepresentation.append("\n-----\n");
+                newRowCounter = 0;
             }
         }
+
+        boardRepresentation.append(boardState.get(boardState.size()-1)).append("\n");
         printStream.println(boardRepresentation.toString());
     }
 

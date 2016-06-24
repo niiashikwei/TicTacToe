@@ -12,8 +12,8 @@ public class Game {
     public void start(){
         board.drawBoard();
         try {
-            int input = playerInput.getInput();
-            board.updateBoard(input, "X");
+            String input = playerInput.getInput();
+            board.updateBoard(Integer.parseInt(input), "X");
             board.drawBoard();
         } catch (IOException e) {
             e.printStackTrace();

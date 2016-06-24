@@ -11,8 +11,8 @@ public class PlayerInput {
         this.printStream = printStream;
     }
 
-    public int getInput() throws IOException {
+    public String getInput() throws IOException {
         printStream.println("Please enter the number corresponding to the position you want to play: ");
-        return bufferedReader.read();
+        return bufferedReader.readLine();
     }
 }

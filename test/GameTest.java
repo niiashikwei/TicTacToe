@@ -8,7 +8,7 @@ import static org.mockito.Mockito.*;
 
 public class GameTest {
 
-    private static final int RANDOM_INPUT = 1;
+    private static final String RANDOM_INPUT = "1";
     private final String PLAYER_ONE_SYMBOL = "X";
     private Game game;
     private Board board;
@@ -23,6 +23,8 @@ public class GameTest {
 
     @Test
     public void shouldPromptTheFirstPlayerForAMoveAfterDrawingTheBoard() throws IOException {
+        when(playerInput.getInput()).thenReturn(RANDOM_INPUT);
+
         game.start();
 
         verify(playerInput).getInput();
@@ -34,7 +36,7 @@ public class GameTest {
 
         game.start();
 
-        verify(board).updateBoard(RANDOM_INPUT, PLAYER_ONE_SYMBOL);
+        verify(board).updateBoard(Integer.parseInt(RANDOM_INPUT), PLAYER_ONE_SYMBOL);
     }
 
     @Test
