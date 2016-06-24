@@ -12,7 +12,9 @@ public class Game {
     public void start(){
         board.drawBoard();
         try {
-            playerInput.getInput();
+            int input = playerInput.getInput();
+            board.updateBoard(input, "X");
+            board.drawBoard();
         } catch (IOException e) {
             e.printStackTrace();
         }
