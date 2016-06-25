@@ -2,6 +2,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.PrintStream;
 
 import static org.mockito.Mockito.*;
 
@@ -19,6 +20,8 @@ public class GameTest {
     private Player firstPlayer;
     private Player secondPlayer;
     private Players players;
+    private MoveValidator moveValidator;
+    private PrintStream printStream;
 
     @Before
     public void setUp() throws Exception {
@@ -32,7 +35,11 @@ public class GameTest {
         when(secondPlayer.getSymbol()).thenReturn(PLAYER_TWO_SYMBOL);
         players = mock(Players.class);
         when(players.getNextPlayer()).thenReturn(firstPlayer, secondPlayer);
-        game = new Game(board, playerInput, gameOverConditions, players);
+        moveValidator = mock(MoveValidator.class);
+        when(moveValidator.isValidMove(RANDOM_INPUT_ONE)).thenReturn(true);
+        when(moveValidator.isValidMove(RANDOM_INPUT_TWO)).thenReturn(true);
+        printStream = mock(PrintStream.class);
+        game = new Game(board, playerInput, gameOverConditions, players, moveValidator, printStream);
     }
 
     @Test
@@ -92,5 +99,40 @@ public class GameTest {
 
         verify(board, times(1)).updateBoard(Integer.parseInt(RANDOM_INPUT_ONE), PLAYER_ONE_SYMBOL);
         verify(board, times(1)).updateBoard(Integer.parseInt(RANDOM_INPUT_TWO), PLAYER_TWO_SYMBOL);
+    }
+
+    @Test
+    public void shouldPromptUserToTryAgainIfLocationIsAlreadyTaken() throws IOException {
+        when(gameOverConditions.isGameOver()).thenReturn(false, true);
+        when(playerInput.getInput()).thenReturn(RANDOM_INPUT_ONE, RANDOM_INPUT_ONE);
+        when(moveValidator.isValidMove(RANDOM_INPUT_ONE)).thenReturn(true, false);
+
+        game.start();
+
+        verify(board, times(1)).updateBoard(Integer.parseInt(RANDOM_INPUT_ONE), PLAYER_ONE_SYMBOL);
+    }
+
+    @Test
+    public void shouldUpdateWithSamePlayerSymbolIfPlayerHasToRetry() throws IOException {
+        when(gameOverConditions.isGameOver()).thenReturn(false, false, true);
+        when(playerInput.getInput()).thenReturn(RANDOM_INPUT_ONE, RANDOM_INPUT_ONE, RANDOM_INPUT_TWO);
+        when(moveValidator.isValidMove(RANDOM_INPUT_ONE)).thenReturn(true, false, true);
+
+        game.start();
+
+        verify(board, times(1)).updateBoard(Integer.parseInt(RANDOM_INPUT_ONE), PLAYER_ONE_SYMBOL);
+        verify(board, times(1)).updateBoard(Integer.parseInt(RANDOM_INPUT_TWO), PLAYER_TWO_SYMBOL);
+    }
+
+    @Test
+    public void shouldInformTheUserOfInvalidMove() throws IOException {
+        when(gameOverConditions.isGameOver()).thenReturn(false, true);
+        when(playerInput.getInput()).thenReturn(RANDOM_INPUT_ONE, RANDOM_INPUT_TWO);
+        when(moveValidator.isValidMove(RANDOM_INPUT_ONE)).thenReturn(false);
+        when(moveValidator.isValidMove(RANDOM_INPUT_TWO)).thenReturn(true);
+
+        game.start();
+
+        verify(printStream).println("Location already taken! Please try again.\n");
     }
 }
