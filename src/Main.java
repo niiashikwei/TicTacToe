@@ -11,7 +11,7 @@ public class Main {
         InputStream inputStream = System.in;
         Reader reader = new InputStreamReader(inputStream);
         PlayerInput playerInput = new PlayerInput(new BufferedReader(reader), printStream);
-        GameOverConditions gameOverConditions = new GameOverConditions();
+        GameOverConditions gameOverConditions = new GameOverConditions(new GameIsADrawCondition(boardState, printStream));
         Player playerOne = new Player("X");
         Player playerTwo = new Player("O");
         Players players = new Players(0, playerOne, playerTwo);
