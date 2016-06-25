@@ -90,7 +90,7 @@ public class GameTest {
 
         game.start();
 
-        verify(board, atLeastOnce()).updateBoard(Integer.parseInt(RANDOM_INPUT_ONE), PLAYER_ONE_SYMBOL);
-        verify(board, atLeastOnce()).updateBoard(Integer.parseInt(RANDOM_INPUT_TWO), PLAYER_TWO_SYMBOL);
+        verify(board, times(1)).updateBoard(Integer.parseInt(RANDOM_INPUT_ONE), PLAYER_ONE_SYMBOL);
+        verify(board, times(1)).updateBoard(Integer.parseInt(RANDOM_INPUT_TWO), PLAYER_TWO_SYMBOL);
     }
 }

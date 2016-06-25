@@ -12,7 +12,7 @@ public class Main {
         GameOverConditions gameOverConditions = new GameOverConditions();
         Player playerOne = new Player("X");
         Player playerTwo = new Player("O");
-        Players players = new Players(playerOne, playerTwo);
+        Players players = new Players(0, playerOne, playerTwo);
         Game game = new Game(board, playerInput, gameOverConditions, players);
         game.start();
     }
