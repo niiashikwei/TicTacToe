@@ -9,7 +9,11 @@ public class Main {
         InputStream inputStream = System.in;
         Reader reader = new InputStreamReader(inputStream);
         PlayerInput playerInput = new PlayerInput(new BufferedReader(reader), printStream);
-        Game game = new Game(board, playerInput);
+        GameOverConditions gameOverConditions = new GameOverConditions();
+        Player playerOne = new Player("X");
+        Player playerTwo = new Player("O");
+        Players players = new Players(playerOne, playerTwo);
+        Game game = new Game(board, playerInput, gameOverConditions, players);
         game.start();
     }
 }

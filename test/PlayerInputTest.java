@@ -5,8 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class PlayerInputTest{
 
@@ -23,10 +22,10 @@ public class PlayerInputTest{
 
     @Test
     public void shouldPromptPlayerForInput() throws IOException {
-
         playerInput.getInput();
 
         verify(printStream).println("Please enter the number corresponding to the position you want to play: ");
         verify(bufferedReader).readLine();
     }
+
 }
