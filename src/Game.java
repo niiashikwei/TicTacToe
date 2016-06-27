@@ -1,21 +1,16 @@
 import java.io.IOException;
-import java.io.PrintStream;
 
 public class Game {
     private Board board;
-    private PlayerInput playerInput;
     private GameOverConditions gameOverConditions;
     private Players players;
-    private MoveValidator moveValidator;
-    private PrintStream printStream;
+    private PlayerInputPrompter playerPrompter;
 
-    public Game(Board board, PlayerInput playerInput, GameOverConditions gameOverConditions, Players players, MoveValidator moveValidator, PrintStream printStream) {
+    public Game(Board board, GameOverConditions gameOverConditions, Players players, PlayerInputPrompter playerPrompter) {
         this.board = board;
-        this.playerInput = playerInput;
         this.gameOverConditions = gameOverConditions;
         this.players = players;
-        this.moveValidator = moveValidator;
-        this.printStream = printStream;
+        this.playerPrompter = playerPrompter;
     }
 
     public void start(){
@@ -23,17 +18,11 @@ public class Game {
         try {
             Player currentPlayer = players.getNextPlayer();
             do{
-                String input = playerInput.getInput();
-                if(moveValidator.isValidMove(input)) {
-                    board.updateBoard(Integer.parseInt(input), currentPlayer.getSymbol());
-                    currentPlayer = players.getNextPlayer();
-                }else{
-                    printStream.println("Location already taken! Please try again.\n");
-                }
-                board.drawBoard();
+                currentPlayer = playerPrompter.promptNextPlayerForInput(currentPlayer);
             }while(!gameOverConditions.isGameOver());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 }

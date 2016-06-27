@@ -16,7 +16,8 @@ public class Main {
         Player playerTwo = new Player("O");
         Players players = new Players(0, playerOne, playerTwo);
         MoveValidator moveValidator = new MoveValidator(boardState);
-        Game game = new Game(board, playerInput, gameOverConditions, players, moveValidator, printStream);
+        PlayerInputPrompter playerPrompter = new PlayerInputPrompter(playerInput, moveValidator, printStream, board, players);
+        Game game = new Game(board, gameOverConditions, players, playerPrompter);
         game.start();
     }
 }
