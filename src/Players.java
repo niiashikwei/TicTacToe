@@ -1,20 +1,23 @@
-public class Players {
-    private final Player[] players;
-    private int currentPlayerPosition;
+import java.util.List;
 
-    public Players(int startingPlayerPosition, Player... players) {
-        this.currentPlayerPosition = startingPlayerPosition;
+public class Players {
+    private final List<Player> players;
+    private Player currentPlayer;
+
+    public Players(Player currentPlayer, List<Player> players) {
+        this.currentPlayer = currentPlayer;
         this.players = players;
-        currentPlayerPosition--;
     }
 
     public Player getNextPlayer() {
-        int lastPlayerPosition = players.length - 1;
+        int lastPlayerPosition = players.size() - 1;
+        int currentPlayerPosition = players.indexOf(currentPlayer);
+
         if(currentPlayerPosition == lastPlayerPosition) {
             currentPlayerPosition = 0;
         }else{
             currentPlayerPosition++;
         }
-        return players[currentPlayerPosition];
+        return players.get(currentPlayerPosition);
     }
 }

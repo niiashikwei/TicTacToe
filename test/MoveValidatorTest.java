@@ -12,10 +12,6 @@ public class MoveValidatorTest {
     private MoveValidator moveValidator;
     private List boardState;
 
-    @Before
-    public void setUp() throws Exception {
-    }
-
     @Test
     public void shouldReturnTrueIfPositionNotOccupied(){
         boardState = newArrayList("1", "2", "3", "4", "5", "6", "7", "8", "9");

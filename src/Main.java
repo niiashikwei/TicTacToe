@@ -14,10 +14,10 @@ public class Main {
         GameOverConditions gameOverConditions = new GameOverConditions(new GameIsADrawCondition(boardState, printStream));
         Player playerOne = new Player("X");
         Player playerTwo = new Player("O");
-        Players players = new Players(0, playerOne, playerTwo);
+        Players players = new Players(playerOne, newArrayList(playerOne, playerTwo));
         MoveValidator moveValidator = new MoveValidator(boardState);
-        PlayerInputPrompter playerPrompter = new PlayerInputPrompter(playerInput, moveValidator, printStream, board, players);
-        Game game = new Game(board, gameOverConditions, players, playerPrompter);
+        PlayerInputPrompter playerPrompter = new PlayerInputPrompter(playerInput, moveValidator, printStream, board, players, playerOne);
+        Game game = new Game(board, gameOverConditions, playerPrompter);
         game.start();
     }
 }

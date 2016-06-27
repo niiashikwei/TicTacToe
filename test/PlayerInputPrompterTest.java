@@ -18,7 +18,7 @@ public class PlayerInputPrompterTest {
     private MoveValidator moveValidator;
     private PrintStream printStream;
     private Players players;
-    private Player player;
+    private Player currentPlayer;
     private Player nextPlayer;
 
     @Before
@@ -28,12 +28,12 @@ public class PlayerInputPrompterTest {
         moveValidator = mock(MoveValidator.class);
         printStream = mock(PrintStream.class);
         players = mock(Players.class);
-        player = mock(Player.class);
+        currentPlayer = mock(Player.class);
         nextPlayer = mock(Player.class);
         when(moveValidator.isValidMove(RANDOM_INPUT_ONE)).thenReturn(true);
         when(moveValidator.isValidMove(RANDOM_INPUT_TWO)).thenReturn(true);
         printStream = mock(PrintStream.class);
-        playerInputPrompter = new PlayerInputPrompter(playerInput, moveValidator, printStream, board, players);
+        playerInputPrompter = new PlayerInputPrompter(playerInput, moveValidator, printStream, board, players, currentPlayer);
 
     }
 
@@ -41,9 +41,9 @@ public class PlayerInputPrompterTest {
     public void shouldUpdateTheBoardWithPlayerOneInput() throws IOException {
         when(playerInput.getInput()).thenReturn(RANDOM_INPUT_ONE);
         when(moveValidator.isValidMove(RANDOM_INPUT_ONE)).thenReturn(true);
-        when(player.getSymbol()).thenReturn(PLAYER_ONE_SYMBOL);
+        when(currentPlayer.getSymbol()).thenReturn(PLAYER_ONE_SYMBOL);
 
-        playerInputPrompter.promptNextPlayerForInput(player);
+        playerInputPrompter.promptNextPlayerForInput();
 
         verify(board).updateBoard(Integer.parseInt(RANDOM_INPUT_ONE), PLAYER_ONE_SYMBOL);
     }
@@ -53,7 +53,7 @@ public class PlayerInputPrompterTest {
     public void shouldDrawTheBoardAfterUpdatingItWithPlayerInput() throws IOException {
         when(playerInput.getInput()).thenReturn(RANDOM_INPUT_ONE);
 
-        playerInputPrompter.promptNextPlayerForInput(player);
+        playerInputPrompter.promptNextPlayerForInput();
 
         verify(board, times(1)).drawBoard();
     }
@@ -62,7 +62,7 @@ public class PlayerInputPrompterTest {
     public void shouldPromptTheFirstPlayerForAMoveAfterDrawingTheBoard() throws IOException {
         when(playerInput.getInput()).thenReturn(RANDOM_INPUT_ONE);
 
-        playerInputPrompter.promptNextPlayerForInput(player);
+        playerInputPrompter.promptNextPlayerForInput();
 
         verify(playerInput).getInput();
     }
@@ -72,11 +72,11 @@ public class PlayerInputPrompterTest {
         when(playerInput.getInput()).thenReturn(RANDOM_INPUT_ONE);
         when(moveValidator.isValidMove(RANDOM_INPUT_ONE)).thenReturn(false);
 
-        Player currentPlayer = playerInputPrompter.promptNextPlayerForInput(player);
+        playerInputPrompter.promptNextPlayerForInput();
 
         verify(players, never()).getNextPlayer();
         verify(board, never()).updateBoard(anyInt(), anyString());
-        assertThat(currentPlayer, is(player));
+        assertThat(currentPlayer, is(currentPlayer));
     }
 
     @Test
@@ -85,22 +85,21 @@ public class PlayerInputPrompterTest {
         when(moveValidator.isValidMove(RANDOM_INPUT_ONE)).thenReturn(true);
         when(players.getNextPlayer()).thenReturn(nextPlayer);
 
-        Player currentPlayer = playerInputPrompter.promptNextPlayerForInput(player);
+        playerInputPrompter.promptNextPlayerForInput();
 
-        assertThat(currentPlayer, is(nextPlayer));
+        verify(players, times(1)).getNextPlayer();
     }
-
 
     @Test
     public void shouldUpdateBoardWithCurrentPlayerSymbolWhenMoveIsValid() throws IOException {
         when(playerInput.getInput()).thenReturn(RANDOM_INPUT_ONE);
         when(moveValidator.isValidMove(RANDOM_INPUT_ONE)).thenReturn(true);
-        when(player.getSymbol()).thenReturn(PLAYER_ONE_SYMBOL);
+        when(currentPlayer.getSymbol()).thenReturn(PLAYER_ONE_SYMBOL);
 
-        playerInputPrompter.promptNextPlayerForInput(player);
+        playerInputPrompter.promptNextPlayerForInput();
 
         verify(board, times(1)).updateBoard(Integer.parseInt(RANDOM_INPUT_ONE), PLAYER_ONE_SYMBOL);
-        verify(player, times(1)).getSymbol();
+        verify(currentPlayer, times(1)).getSymbol();
     }
 
     @Test
@@ -108,7 +107,7 @@ public class PlayerInputPrompterTest {
         when(playerInput.getInput()).thenReturn(RANDOM_INPUT_ONE);
         when(moveValidator.isValidMove(RANDOM_INPUT_ONE)).thenReturn(false);
 
-        playerInputPrompter.promptNextPlayerForInput(player);
+        playerInputPrompter.promptNextPlayerForInput();
 
         verify(printStream).println("Location already taken! Please try again.\n");
     }
