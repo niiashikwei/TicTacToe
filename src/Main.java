@@ -11,10 +11,14 @@ public class Main {
         InputStream inputStream = System.in;
         Reader reader = new InputStreamReader(inputStream);
         PlayerInput playerInput = new PlayerInput(new BufferedReader(reader), printStream);
-        GameOverConditions gameOverConditions = new GameOverConditions(new GameIsADrawCondition(boardState, printStream));
         Player playerOne = new Player("X");
         Player playerTwo = new Player("O");
         Players players = new Players(playerOne, newArrayList(playerOne, playerTwo));
+        GameOverCondition threeInARowCondition = new ThreeInARowCondition(boardState, players, printStream);
+        GameOverCondition threeInAColumnCondition = new ThreeInAColumnCondition(boardState, players, printStream);
+        GameOverCondition threeInADiagonalCondition = new ThreeInADiagonalCondition(boardState, players, printStream);
+        GameOverCondition gameIsADrawCondition = new GameIsADrawCondition(boardState, printStream);
+        GameOverConditions gameOverConditions = new GameOverConditions(gameIsADrawCondition, threeInARowCondition, threeInAColumnCondition, threeInADiagonalCondition);
         MoveValidator moveValidator = new MoveValidator(boardState);
         PlayerInputPrompter playerPrompter = new PlayerInputPrompter(playerInput, moveValidator, printStream, board, players, playerOne);
         Game game = new Game(board, gameOverConditions, playerPrompter);

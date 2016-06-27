@@ -35,4 +35,13 @@ public class PlayersTest {
 
         assertThat(nextPlayer, is(playerOne));
     }
+
+    @Test
+    public void shouldReturnCurrentPlayer(){
+        players = new Players(playerOne, newArrayList(playerOne, playerTwo));
+
+        Player nextPlayer = players.getCurrentPlayer();
+
+        assertThat(nextPlayer, is(playerOne));
+    }
 }

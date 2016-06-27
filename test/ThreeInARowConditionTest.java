@@ -15,11 +15,14 @@ public class ThreeInARowConditionTest {
 
     private PrintStream printStream;
     private Player currentPlayer;
+    private Players players;
 
     @Before
     public void setUp(){
         printStream = mock(PrintStream.class);
         currentPlayer = mock(Player.class);
+        players = mock(Players.class);
+        when(players.getCurrentPlayer()).thenReturn(currentPlayer);
     }
 
     @Test
@@ -27,7 +30,7 @@ public class ThreeInARowConditionTest {
         List<String> boardState = newArrayList("X", "X", "X", "4", "O", "6", "O", "8", "O");
         when(currentPlayer.getSymbol()).thenReturn("X");
 
-        GameOverCondition condition = new ThreeInARowCondition(boardState, currentPlayer, printStream);
+        GameOverCondition condition = new ThreeInARowCondition(boardState, players, printStream);
 
         boolean isThreeInARow = condition.evaluate();
 
@@ -39,7 +42,7 @@ public class ThreeInARowConditionTest {
         List<String> boardState = newArrayList("X", "X", "X", "4", "O", "6", "O", "8", "O");
         when(currentPlayer.getSymbol()).thenReturn("O");
 
-        GameOverCondition condition = new ThreeInARowCondition(boardState, currentPlayer, printStream);
+        GameOverCondition condition = new ThreeInARowCondition(boardState, players, printStream);
 
         boolean isThreeInARow = condition.evaluate();
 
@@ -51,7 +54,7 @@ public class ThreeInARowConditionTest {
         List<String> boardState = newArrayList("X", "X", "X", "4", "O", "6", "O", "8", "O");
         when(currentPlayer.getSymbol()).thenReturn("X");
 
-        GameOverCondition condition = new ThreeInARowCondition(boardState, currentPlayer, printStream);
+        GameOverCondition condition = new ThreeInARowCondition(boardState, players, printStream);
 
         condition.evaluate();
 

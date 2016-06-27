@@ -20,4 +20,8 @@ public class Players {
         }
         return players.get(currentPlayerPosition);
     }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
 }
