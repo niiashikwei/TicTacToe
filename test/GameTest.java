@@ -40,12 +40,11 @@ public class GameTest {
 
     @Test
     public void shouldKeepPromptingForInputWhileGameNotOver() throws IOException {
-        when(gameOverConditions.isGameOver()).thenReturn(true);
+        when(gameOverConditions.isGameOver()).thenReturn(false, true);
 
         game.start();
 
-        verify(playerPrompter, times(1)).promptNextPlayerForInput();
-        verify(playerPrompter, times(1)).promptNextPlayerForInput();
+        verify(playerPrompter, times(2)).promptNextPlayerForInput();
     }
 
 }

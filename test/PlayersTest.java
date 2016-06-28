@@ -37,6 +37,16 @@ public class PlayersTest {
     }
 
     @Test
+    public void shouldCycleThroughPlayers(){
+        players = new Players(playerOne, newArrayList(playerOne, playerTwo));
+
+        players.getNextPlayer();
+        Player nextNextPlayer = players.getNextPlayer();
+
+        assertThat(nextNextPlayer, is(playerOne));
+    }
+
+    @Test
     public void shouldReturnCurrentPlayer(){
         players = new Players(playerOne, newArrayList(playerOne, playerTwo));
 

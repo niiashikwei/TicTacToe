@@ -18,7 +18,8 @@ public class Players {
         }else{
             currentPlayerPosition++;
         }
-        return players.get(currentPlayerPosition);
+        currentPlayer = players.get(currentPlayerPosition);
+        return currentPlayer;
     }
 
     public Player getCurrentPlayer() {
